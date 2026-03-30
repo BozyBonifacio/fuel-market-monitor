@@ -2,27 +2,38 @@
   "expo": {
     "name": "Fuel Market Monitor",
     "slug": "fuel-market-monitor",
-    "version": "1.0.0",
+    "scheme": "fuelmarketmonitor",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "assetBundlePatterns": ["**/*"],
+    "jsEngine": "hermes",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#081120"
     },
-    "assetBundlePatterns": ["**/*"],
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.example.fuelmarketmonitor",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Fuel Market Monitor uses your location to find nearby fuel stations and local price trends."
+        "NSLocationWhenInUseUsageDescription": "Fuel Market Monitor uses your location to choose the nearest benchmark fuel market."
       }
     },
     "android": {
       "package": "com.example.fuelmarketmonitor",
-      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"]
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ]
     },
-    "plugins": ["expo-location"]
+    "plugins": ["expo-location"],
+    "extra": {
+      "appVariant": "production-starter"
+    }
   }
 }

@@ -1,106 +1,77 @@
-<<<<<<< HEAD
-# fuel-market-monitor
-=======
-# Fuel Market Monitor
+# Fuel Market Monitor — production starter
 
-A React Native + Expo starter application for monitoring fuel market prices on Android and iOS.
+This is an upgraded Expo SDK 54 mobile app for monitoring U.S. fuel market benchmarks from Windows 10 and shipping to iOS with EAS cloud builds.
 
-## Important reality check
+## What changed
 
-You can develop this project from **Windows 10**, but Apple iOS binaries are not normally signed and produced fully locally on plain Windows. The practical path is:
+This version turns the original demo into a production-oriented starter:
 
-1. develop on Windows 10 with Expo,
-2. test Android/web locally,
-3. generate the iOS build with **Expo EAS Build** in the cloud.
+- Expo SDK 54 dependency set
+- resilient EIA data adapter with market-specific series mapping
+- cached fallback when live refresh fails
+- persisted market selection and threshold settings
+- location-based market auto-selection
+- cleaner dashboard UI for iPhone and Android
+- simpler trend visualization with no extra chart dependency
+- honest production checklist for the work still needed before store release
 
-Expo documents EAS Build as a hosted service for building Android and iOS app binaries, including iOS `.ipa` files for distribution and testing. Flutter and Codemagic provide a similar cloud-build route for iOS. See Expo EAS Build docs and iOS build docs, plus Flutter iOS deployment and Codemagic docs for the same constraint pattern. 
+## What this app does now
 
-## What this starter includes
+- tracks U.S. benchmark fuel markets
+- supports these markets: U.S., East Coast, Midwest, Gulf Coast, Rocky Mountain, West Coast, California
+- shows latest regular gasoline and diesel prices for all supported markets
+- shows premium gasoline for the national benchmark where the configured EIA series is available
+- stores the last successful snapshot locally so the app still shows useful data when the feed is unavailable
+- lets users set watch thresholds for regular and diesel prices
 
-- live-refreshing dashboard
-- gasoline / diesel / premium snapshot cards
-- trend chart
-- pluggable data provider layer
-- default mock mode for instant local startup
-- optional live mode using the U.S. EIA API
+## What it still is not
 
-## Data source options
+This is a **production starter**, not a fully finished commercial app.
 
-### Included now: EIA market prices
+To make it truly production-grade for retail users, you should still add:
 
-The included adapter can call the U.S. Energy Information Administration API, which publishes petroleum and fuel price data. This is more of a market feed than a station-by-station retail feed.
+- a licensed station-level fuel provider for your target country or market
+- backend APIs for accounts, watchlists, and sync
+- push notifications for threshold events
+- analytics, crash reporting, and privacy disclosures
+- final bundle identifiers, assets, and store metadata
 
-### For true station-level "real-time" pricing
+## Current data source
 
-Replace `src/services/fuelService.ts` with a commercial provider or regional open-data API for your target country. Good choices depend heavily on geography and licensing.
+The live mode uses the U.S. Energy Information Administration API. This is a market benchmark feed, not a real-time station-by-station retail feed.
 
-## Run on Windows 10
-
-### Prerequisites
-
-- Node.js LTS
-- npm
-- Expo account
-- Apple Developer account for App Store / TestFlight delivery
-
-### Install
-
-```bash
-npm install
-npx expo start
-```
-
-### Add a live API key
-
-Create `.env`:
+Environment variable:
 
 ```bash
 EXPO_PUBLIC_FUEL_API_KEY=your_eia_api_key_here
 ```
 
-Or place it in Expo config `extra`.
+If no API key is present, the app runs in mock mode.
 
-## Build iOS from Windows 10
-
-Install EAS CLI and sign in:
+## Install on Windows 10
 
 ```bash
-npm install -g eas-cli
+npm install
+npx expo install --fix
+npx expo start
+```
+
+If Expo Go on iPhone is your test target, stay on SDK 54 until Expo Go changes again.
+
+## iOS build from Windows 10
+
+```bash
 npx eas login
-```
-
-Initialize build config if needed:
-
-```bash
-npx eas build:configure
-```
-
-Create the iOS build:
-
-```bash
 npx eas build --platform ios
 ```
 
-For App Store submission:
+## Key files
 
-```bash
-npx eas submit --platform ios
-```
+- `src/services/fuelService.ts` — live and mock data provider
+- `src/hooks/useFuelMonitor.ts` — state, caching, alerts, location logic
+- `src/storage/preferences.ts` — AsyncStorage persistence
+- `src/components/HomeScreen.tsx` — main production dashboard
 
-## Files to customize
+## Recommended next engineering step
 
-- `src/services/fuelService.ts` — swap or expand the fuel API
-- `src/components/HomeScreen.tsx` — UI and feature layout
-- `app.json` — bundle IDs, app name, permissions
-- `eas.json` — build profiles
-
-## Recommended production upgrades
-
-- background fetch / push alerts for price spikes
-- geofenced nearby stations
-- local caching with SQLite
-- historical analytics backend
-- price anomaly detection
-- map view of stations
-- user watchlists by city or route
->>>>>>> 38c0264 (initial version)
+Swap the EIA benchmark adapter for your real station-price provider and add push notifications for user watchlists.

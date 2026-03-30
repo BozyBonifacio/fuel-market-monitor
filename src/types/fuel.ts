@@ -1,25 +1,44 @@
-export type FuelType = 'gasoline' | 'diesel' | 'premium';
+export type FuelProduct = 'regular' | 'diesel' | 'premium';
 
-export type FuelPricePoint = {
-  timestamp: string;
-  fuelType: FuelType;
-  price: number;
-  stationName: string;
-  city: string;
-  currency: string;
-  lat?: number;
-  lng?: number;
+export type MarketId = 'NUS' | 'R10' | 'R20' | 'R30' | 'R40' | 'R50' | 'SCA';
+
+export type MarketOption = {
+  id: MarketId;
+  label: string;
+  subtitle: string;
 };
 
-export type FuelApiConfig = {
-  provider: 'mock' | 'eia';
-  apiKey?: string;
-  baseUrl?: string;
+export type FuelPoint = {
+  period: string;
+  isoDate: string;
+  product: FuelProduct;
+  value: number;
+  unit: string;
 };
 
 export type FuelSnapshot = {
+  marketId: MarketId;
+  marketLabel: string;
+  provider: 'eia' | 'mock' | 'cache';
   updatedAt: string;
-  market: string;
-  currency: string;
-  points: FuelPricePoint[];
+  stale: boolean;
+  points: FuelPoint[];
+  warning?: string;
+};
+
+export type AlertSettings = {
+  regularAbove: number;
+  dieselAbove: number;
+};
+
+export type FuelPreferences = {
+  selectedMarketId: MarketId;
+  alertSettings: AlertSettings;
+};
+
+export type AlertItem = {
+  id: string;
+  title: string;
+  detail: string;
+  severity: 'info' | 'warning' | 'critical';
 };
